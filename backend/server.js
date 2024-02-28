@@ -4,8 +4,6 @@ const mongoose = require("mongoose");
 const app = require("./app");
 const URL = process.env.URL;
 
-console.log(URL);
-
 mongoose.set("strictQuery", true);
 mongoose.connect(URL).then(() => {
   console.log("connected to mongo");
