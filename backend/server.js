@@ -1,13 +1,16 @@
-import express from "express";
-import bodyParser from "body-parser";
+require("dotenv").config();
+const mongoose = require("mongoose");
 
-const app = express();
-app.use(bodyParser.json());
+const app = require("./app");
+const URL = process.env.URL;
 
-app.get("/api", (req, res) => {
-  res.json({ message: "Hello World" });
+console.log(URL);
+
+mongoose.set("strictQuery", true);
+mongoose.connect(URL).then(() => {
+  console.log("connected to mongo");
 });
 
-app.listen(5000, () => {
-  console.log("Server is running on port 5000\n" + "http://localhost:5000/api");
-});
+const PORT = process.env.PORT || "3600";
+
+app.listen(PORT, "0.0.0.0", () => console.log("http://localhost:" + PORT));
