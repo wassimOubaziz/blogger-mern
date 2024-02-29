@@ -10,14 +10,26 @@ const userSchema = new Schema({
     unique: true,
     lowercase: true,
   },
+  username: {
+    type: String,
+    required: [true, "Username is required"],
+    unique: true,
+    maxlength: [20, "Username can't be longer than 20 characters"],
+    minlength: [10, "Username can't be shorter than 10 characters"],
+  },
   password: {
     type: String,
     required: [true, "Password is required"],
+    maxlength: [30, "Password can't be longer than 20 characters"],
+    minlength: [8, "Password can't be shorter than 10 characters"],
   },
   role: {
     type: String,
     enum: ["admin", "user"],
     default: "user",
+  },
+  validationToken: {
+    type: String,
   },
 });
 
