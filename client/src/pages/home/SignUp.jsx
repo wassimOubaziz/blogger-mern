@@ -1,8 +1,43 @@
-import { Button, Checkbox, Label, TextInput } from "flowbite-react";
-import React from "react";
+import {
+  Alert,
+  Button,
+  Checkbox,
+  Label,
+  Spinner,
+  TextInput,
+} from "flowbite-react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { axios } from "./../axios";
 
 export default function SignUp() {
+  const [formatData, setFormatData] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
+
+  const handleChanges = (e) => {
+    setFormatData({ ...formatData, [e.target.id]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    axios
+      .post("/sign-up", formatData)
+      .then((res) => {
+        setSuccess(res.data.message);
+        setLoading(false);
+        setTimeout(() => setSuccess(false), 6000);
+      })
+      .catch((e) => {
+        setError(e.response.data.message);
+        setLoading(false);
+        setTimeout(() => {
+          setError(null);
+        }, 8000);
+      });
+  };
   return (
     <div className="min-h-auto mt-20 flex items-start justify-center md:block">
       <div className=" flex p-3 max-w-3xl mx-auto flex-col md:flex-row md:items-center gap-5">
@@ -36,6 +71,7 @@ export default function SignUp() {
                 type="text"
                 placeholder="Username"
                 autoFocus={true}
+                onChange={handleChanges}
                 required
               />
             </div>
@@ -47,6 +83,7 @@ export default function SignUp() {
                 id="email"
                 type="email"
                 placeholder="name@wassim.com"
+                onChange={handleChanges}
                 required
               />
             </div>
@@ -58,11 +95,24 @@ export default function SignUp() {
                 id="password"
                 type="password"
                 placeholder="Password"
+                onChange={handleChanges}
                 required
               />
             </div>
-            <Button type="submit" gradientDuoTone={"purpleToPink"}>
-              Submit
+            <Button
+              type="submit"
+              gradientDuoTone={"purpleToPink"}
+              onClick={handleSubmit}
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <Spinner size={"sm"} />
+                  <span className="pl-3">Loading...</span>
+                </>
+              ) : (
+                "Sign Up"
+              )}
             </Button>
           </form>
           <div className="flex gap-2 text-sm mt-5">
@@ -71,6 +121,16 @@ export default function SignUp() {
               Sign In
             </Link>
           </div>
+          {error && (
+            <Alert className="mt-5" color={"failure"}>
+              {error}
+            </Alert>
+          )}
+          {success && (
+            <Alert className="mt-5" color={"success"}>
+              {success}
+            </Alert>
+          )}
         </div>
       </div>
     </div>

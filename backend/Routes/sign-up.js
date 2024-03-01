@@ -1,10 +1,16 @@
 const router = require("express").Router();
 const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
-const User = require("../model/User"); // Adjust the path based on your project structure
+const User = require("../Models/User"); // Adjust the path based on your project structure
 
 //////////////////////register///////////////////////////
 router.post("/", async (req, res) => {
+  const { email, username, password } = req.body;
+  if (!email || !username || !password) {
+    return res.status(400).json({ message: "Please fill all the fields" });
+  }
+  console.log(email, username, password);
+
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
