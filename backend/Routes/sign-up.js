@@ -29,7 +29,7 @@ router.post("/", async (req, res) => {
       body.validationToken = token;
       await User.create(body);
       ///this will change in deployment
-      const validationLink = `http://localhost:4000/validate/${token}`;
+      const validationLink = `http://localhost:4000/api/validate/${token}`;
       try {
         await transporter.sendMail({
           from: process.env.EMAIL_SECRET, // replace with your actual email address

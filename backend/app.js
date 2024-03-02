@@ -3,6 +3,8 @@ const app = express();
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const signUp = require("./Routes/sign-up");
+const validate = require("./Routes/validate");
+const signIn = require("./Routes/sign-in");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -27,10 +29,8 @@ app.use(express.static("public"));
 app.use(express.json());
 
 app.use("/api/sign-up", signUp);
-
-app.get("/api", (req, res) => {
-  res.json({ message: "test" });
-});
+app.use("/api/validate", validate);
+app.use("/api/sign-in", signIn);
 
 //exporting app
 module.exports = app;

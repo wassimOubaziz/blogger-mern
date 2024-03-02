@@ -20,7 +20,6 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: [true, "Password is required"],
-    maxlength: [30, "Password can't be longer than 20 characters"],
     minlength: [8, "Password can't be shorter than 10 characters"],
   },
   role: {
@@ -30,6 +29,10 @@ const userSchema = new Schema({
   },
   validationToken: {
     type: String,
+  },
+  active: {
+    type: Boolean,
+    default: false,
   },
 });
 
@@ -45,7 +48,7 @@ userSchema.methods.generateAuthToken = async function () {
   const user = this;
   const token = jwt.sign(
     { _id: user._id, email: user.email, role: user.role },
-    process.env.JWT_KEY,
+    process.env.JWT_SECRET,
     {
       expiresIn: "7d",
     }
@@ -58,7 +61,9 @@ userSchema.statics.findByCredentials = async (email, password) => {
   if (!user) {
     throw new Error("Invalid login credentials");
   }
+  console.log(user, "this is the user");
   const isMatch = await bcrypt.compare(password, user.password);
+  console.log(isMatch, "this is the isMatch");
   if (!isMatch) {
     throw new Error("Invalid login credentials");
   }
