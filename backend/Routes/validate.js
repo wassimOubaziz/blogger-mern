@@ -14,9 +14,8 @@ router.get("/:token", async (req, res) => {
     user.active = true;
     user.validationToken = "";
     await user.save();
-    res.status(200).json({ message: "Account validated" });
+    res.status(200).redirect("http://localhost:5173/sign-in");
   } catch (e) {
-    console.log(e.message);
     res.status(400).json({ message: e.message });
   }
 });
