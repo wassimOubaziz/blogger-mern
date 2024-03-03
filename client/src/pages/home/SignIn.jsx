@@ -3,12 +3,20 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { axios } from "./../axios";
 import { useCookies } from "react-cookie";
+import {
+  startLoading,
+  signInSuccess,
+  signInFailure,
+  clearFailure,
+} from "../../redux/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function SignIn() {
   const [formatData, setFormatData] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const { loading, error } = useSelector((state) => state.user);
   const [cookies, setCookie] = useCookies(["token", "role"]);
+
+  const dispatch = useDispatch();
 
   const handleChanges = (e) => {
     setFormatData({ ...formatData, [e.target.id]: e.target.value });
@@ -16,19 +24,18 @@ export default function SignIn() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
+    dispatch(startLoading());
     axios
       .post("/sign-in", formatData)
       .then((res) => {
-        setLoading(false);
+        dispatch(signInSuccess(res.data.user));
         setCookie("token", res.data.token, { path: "/" });
         setCookie("role", res.data.role, { path: "/" });
       })
       .catch((e) => {
-        setError(e.response.data.message);
-        setLoading(false);
+        dispatch(signInFailure(e.response.data.message));
         setTimeout(() => {
-          setError(null);
+          dispatch(clearFailure());
         }, 8000);
       });
   };

@@ -16,7 +16,7 @@ router.post("/", async (req, res) => {
       return res.status(400).json({ message: "Please validate your account" });
     }
     const token = await user.generateAuthToken();
-    res.status(200).json({ token, role: user.role });
+    res.status(200).json({ token, role: user.role, user });
   } catch (e) {
     res.status(400).json({ message: e.message });
   }
