@@ -10,6 +10,7 @@ import {
   clearFailure,
 } from "../../redux/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import GoogleAuthButton from "../../components/GoogleAuthButton";
 
 export default function SignIn() {
   const [formatData, setFormatData] = useState({});
@@ -103,6 +104,7 @@ export default function SignIn() {
                 "Sign In"
               )}
             </Button>
+            <GoogleAuthButton />
           </form>
           <div className="flex gap-2 text-sm mt-5">
             <span>Don't have an account?</span>
