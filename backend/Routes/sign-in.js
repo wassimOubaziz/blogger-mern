@@ -19,7 +19,12 @@ router.post("/", async (req, res) => {
     res.status(200).json({
       token,
       role: user.role,
-      user: { email: user.email, role: user.role, username: user.username },
+      user: {
+        email: user.email,
+        role: user.role,
+        username: user.username,
+        profileImage: user.profileImage,
+      },
     });
   } catch (e) {
     res.status(400).json({ message: e.message });

@@ -34,6 +34,11 @@ const userSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  profileImage: {
+    type: String,
+    default:
+      "https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+  },
 });
 
 userSchema.pre("save", async function (next) {
